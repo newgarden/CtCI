@@ -57,9 +57,9 @@ def zero_matrix(matrix):
 class Test(unittest.TestCase):
     TEST_DATA_FILE = 'test_data.txt'
 
-    def _read_from_file(self, f):
+    def _test_cases(self):
         """
-        Read test cases from file
+        Returns iterator to read test cases from file one by one.
 
         The file contains multiple test cases. Each case has first line containing two integers M
         and N representing number of rows and columns in matrix. Next M lines contain rows of the
@@ -67,26 +67,24 @@ class Test(unittest.TestCase):
         rows of the expected output matrix followed by line filled with stars '*'. Starts are used
         to visually separate test cases.
 
-        Each call to the method reads one test case.
-
         """
-        line = f.readline()
-        if not line:
-            return None, None
+        with open(self.TEST_DATA_FILE) as f:
+            line = f.readline()
+            while line:
+                data_in = []
+                data_out = []
+                n_rows = int(line.split()[0])
 
-        input = []
-        output = []
-        n_rows = int(line.split()[0])
+                for row in range(n_rows):
+                    data_in.append([int(i) for i in f.readline().split()])
+                f.readline()
 
-        for row in range(n_rows):
-            input.append([int(i) for i in f.readline().split()])
-        f.readline()
+                for row in range(n_rows):
+                    data_out.append([int(i) for i in f.readline().split()])
+                f.readline()
 
-        for row in range(n_rows):
-            output.append([int(i) for i in f.readline().split()])
-        f.readline()
-
-        return input, output
+                yield data_in, data_out
+                line = f.readline()
 
     def test_empty(self):
         """
@@ -112,15 +110,12 @@ class Test(unittest.TestCase):
         """
         Test function in more sophisticated cases taken from file.
         """
-        with open(self.TEST_DATA_FILE) as f:
-            case = 1
-            input, output = self._read_from_file(f)
-            while input and output:
-                with self.subTest(i=case):
-                    zero_matrix(input)
-                    self.assertEqual(input, output)
-                    case += 1
-                input, output = self._read_from_file(f)
+        case = 1
+        for data_in, data_out in self._test_cases():
+            with self.subTest(i=case):
+                zero_matrix(data_in)
+                self.assertEqual(data_in, data_out)
+                case += 1
 
 
 if __name__ == '__main__':
