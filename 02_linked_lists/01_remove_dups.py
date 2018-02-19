@@ -31,9 +31,7 @@ def remove_dups1(lst):
 
     while node.next:
         if node.next.value in values:
-            temp = node.next
             node.next = node.next.next
-            del temp
         else:
             node = node.next
             values.add(node.value)
@@ -55,9 +53,7 @@ def remove_dups2(lst):
         runner = current
         while runner.next:
             if runner.next.value == current.value:
-                temp = runner.next
                 runner.next = runner.next.next
-                del temp
             else:
                 runner = runner.next
         current = current.next
