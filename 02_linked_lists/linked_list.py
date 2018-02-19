@@ -86,6 +86,18 @@ class LinkedList:
                 if node and circular:
                     node.next = self.head
 
+    def __repr__(self):
+        if not self.head:
+            return 'LinkedList()'
+        node = self.head
+        repr_nodes = []
+        while node:
+            repr_nodes.append(repr(node.value))
+            node = node.next
+            if node is self.head:
+                return 'LinkedList([{}], circular=True)'.format(', '.join(repr_nodes))
+        return 'LinkedList([{}])'.format(', '.join(repr_nodes))
+
     def __str__(self):
         if not self.head:
             return '<LinkedList>'
@@ -231,6 +243,19 @@ class TestLinkedList(unittest.TestCase):
 
         lst = LinkedList([1, 2, 3], circular=True)
         self.assertEqual(str(lst), '<Circular LinkedList: 1, 2, 3>')
+
+    def test_repr(self):
+        """
+        Test __repr__() method.
+        """
+        lst = LinkedList()
+        self.assertEqual(repr(lst), 'LinkedList()')
+
+        lst = LinkedList([1, 'a', True, (2, 'b'), [1, 2, 3]])
+        self.assertEqual(repr(lst), "LinkedList([1, 'a', True, (2, 'b'), [1, 2, 3]])")
+
+        lst = LinkedList([1, 2, 3], circular=True)
+        self.assertEqual(repr(lst), 'LinkedList([1, 2, 3], circular=True)')
 
     def test_eq(self):
         """

@@ -15,8 +15,7 @@ def remove_dups1(lst):
     """
     Remove duplicates from a linked list using a temporary buffer.
 
-    Takes O(N) time and O(N) additional space. This algorithm can work only with lists containing
-    hashable objects, otherwise we won't be able to use set as a buffer.
+    Takes O(N) time and O(N) additional space.
 
     Args:
         lst (LinkedList): Linked list containing any hashable objects.
@@ -41,8 +40,7 @@ def remove_dups2(lst):
     """
     Remove duplicates from a linked list without using additional memory.
 
-    Takes O(N^2) time and O(1) additional space. Unlike the faster algorithm with a buffer this
-    algorithm can work with lists containing arbitrary objects.
+    Takes O(N^2) time and O(1) additional space.
 
     Args:
         lst (LinkedList): Linked list containing arbitrary objects.
