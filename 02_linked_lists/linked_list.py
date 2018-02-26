@@ -134,6 +134,23 @@ class LinkedList:
                 return True
         return False
 
+    def __getitem__(self, key):
+        if not isinstance(key, int):
+            raise TypeError('linked list indices must be integers')
+
+        if not self.head or key < 0:
+            raise IndexError('linked list index out of range')
+
+        i = 0
+        node = self.head
+        while i < key:
+            if not node.next or node.next is self.head:
+                raise IndexError('linked list index out of range')
+            node = node.next
+            i += 1
+
+        return node
+
 
 class TestListNode(unittest.TestCase):
     """
@@ -317,6 +334,44 @@ class TestLinkedList(unittest.TestCase):
         self.assertNotEqual(circular_lst1, circular_lst3)
         self.assertNotEqual(circular_lst1, circular_lst3)
         self.assertNotEqual(circular_lst1, circular_lst4)
+
+    def test_getitem(self):
+        lst = LinkedList()
+
+        with self.assertRaises(TypeError) as cm:
+            node = lst['1']
+        self.assertEqual(str(cm.exception), 'linked list indices must be integers')
+
+        with self.assertRaises(TypeError) as cm:
+            node = lst[2:5]
+
+        with self.assertRaises(IndexError) as cm:
+            node = lst[0]
+        self.assertEqual(str(cm.exception), 'linked list index out of range')
+
+        lst = LinkedList(['a', 'b', 'c', 'd', 'e'])
+
+        with self.assertRaises(IndexError) as cm:
+            node = lst[-1]
+
+        with self.assertRaises(IndexError) as cm:
+            node = lst[5]
+
+        self.assertEqual(lst[0].value, 'a')
+        self.assertEqual(lst[2].value, 'c')
+        self.assertEqual(lst[4].value, 'e')
+
+        lst = LinkedList(['1', '2', '3', '4', '5'], circular=True)
+
+        with self.assertRaises(IndexError) as cm:
+            node = lst[-1]
+
+        with self.assertRaises(IndexError) as cm:
+            node = lst[5]
+
+        self.assertEqual(lst[0].value, '1')
+        self.assertEqual(lst[2].value, '3')
+        self.assertEqual(lst[4].value, '5')
 
 
 if __name__ == '__main__':
