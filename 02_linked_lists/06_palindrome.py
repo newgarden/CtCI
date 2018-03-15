@@ -13,7 +13,9 @@ from linked_list import LinkedList
 
 def is_palindrome1(lst):
     """
-    Checks if a linked list is a palindrome using additional memory.
+    Checks if a linked list is a palindrome. Algorithm 1.
+
+    Uses additional memory, does not modify the list, no recursion.
 
     Complexity: O(N) time, O(N) space.
 
@@ -52,8 +54,47 @@ def is_palindrome1(lst):
 
 def is_palindrome2(lst):
     """
+    Checks if a linked list is a palindrome. Algorithm 2.
+
+    Reverses half of the list in place, no recursion, no additional memory.
+
+    Complexity: O(N) time, O(1) space.
+
+    Args:
+        lst (LinkedList): A linked list.
+
+    Returns:
+        bool: True if the list is a palindrome, False otherwise.
+
     """
-    pass
+    length = 0
+    node = lst.head
+    while node:
+        length += 1
+        node = node.next
+
+    if length < 3:
+        return True
+
+    prev_node = lst.head
+    forward_runner = lst.head.next
+    for i in range(length // 2 - 1):
+        next_node = forward_runner.next
+        forward_runner.next = prev_node
+        prev_node = forward_runner
+        forward_runner = next_node
+
+    backward_runner = prev_node
+    if length % 2:
+        forward_runner = forward_runner.next
+
+    for i in range(length // 2):
+        if backward_runner.value != forward_runner.value:
+            return False
+        forward_runner = forward_runner.next
+        backward_runner = backward_runner.next
+
+    return True
 
 
 def is_palindrome3(lst):
@@ -79,3 +120,8 @@ class TestPalindrome(unittest.TestCase):
         for data in self.data:
             lst = LinkedList(data[0])
             self.assertEqual(is_palindrome1(lst), data[1])
+
+    def test_palindrome2(self):
+        for data in self.data:
+            lst = LinkedList(data[0])
+            self.assertEqual(is_palindrome2(lst), data[1])
