@@ -4,8 +4,6 @@ Palindrome:
 
 Problem statement: Implement a function to check if a linked list is a palindrome.
 
-Hints:#5, #13, #29, #61, #101
-
 """
 import unittest
 from linked_list import LinkedList
@@ -13,9 +11,7 @@ from linked_list import LinkedList
 
 def is_palindrome1(lst):
     """
-    Checks if a linked list is a palindrome. Algorithm 1.
-
-    Uses additional memory, does not modify the list, no recursion.
+    Checks if a linked list is a palindrome. Algorithm 1. Does not modify the list.
 
     Complexity: O(N) time, O(N) space.
 
@@ -26,6 +22,7 @@ def is_palindrome1(lst):
         bool: True if the list is a palindrome, False otherwise.
 
     """
+    # Get the length of the list
     length = 0
     node = lst.head
     while node:
@@ -35,15 +32,19 @@ def is_palindrome1(lst):
     if length < 3:
         return True
 
+    # Save the left half of the list in an array
     left_part = []
     node = lst.head
     for i in range(length // 2):
         left_part.append(node.value)
         node = node.next
 
+    # If the length is odd ignore the middle node
     if length % 2:
         node = node.next
 
+    # Go through the right half of the list comparing
+    # each node with the corresponding node from the array.
     for i in range(length // 2):
         if left_part[-(i + 1)] != node.value:
             return False
@@ -54,9 +55,7 @@ def is_palindrome1(lst):
 
 def is_palindrome2(lst):
     """
-    Checks if a linked list is a palindrome. Algorithm 2.
-
-    Reverses half of the list in place, no recursion, no additional memory.
+    Checks if a linked list is a palindrome. Algorithm 2. Reverses half of the list in place.
 
     Complexity: O(N) time, O(1) space.
 
@@ -67,6 +66,7 @@ def is_palindrome2(lst):
         bool: True if the list is a palindrome, False otherwise.
 
     """
+    # Get the length of the list.
     length = 0
     node = lst.head
     while node:
@@ -76,6 +76,7 @@ def is_palindrome2(lst):
     if length < 3:
         return True
 
+    # Go through the left half of the list with forward runner turning the next node pointers.
     prev_node = lst.head
     forward_runner = lst.head.next
     for i in range(length // 2 - 1):
@@ -84,10 +85,14 @@ def is_palindrome2(lst):
         prev_node = forward_runner
         forward_runner = next_node
 
-    backward_runner = prev_node
+    # If the length is odd ignore the middle node
     if length % 2:
         forward_runner = forward_runner.next
 
+    # Go forward through the right half with the forward runner,
+    # go back through the reversed left half with the backward runner,
+    # compare runners' values.
+    backward_runner = prev_node
     for i in range(length // 2):
         if backward_runner.value != forward_runner.value:
             return False
@@ -95,12 +100,6 @@ def is_palindrome2(lst):
         backward_runner = backward_runner.next
 
     return True
-
-
-def is_palindrome3(lst):
-    """
-    """
-    pass
 
 
 class TestPalindrome(unittest.TestCase):
