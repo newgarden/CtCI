@@ -4,7 +4,7 @@ Intersection
 
 Problem statement: Given two (singly) linked lists, determine if the two lists intersect. Return
 the intersecting node. Note that the intersection is defined based on reference, not value. That is,
-if the kth node of the first linked list is the exact same node (by reference) as the jth node of
+if the k-th node of the first linked list is the exact same node (by reference) as the j-th node of
 the second linked list, then they are intersecting.
 
 """
@@ -14,18 +14,35 @@ from linked_list import LinkedList
 
 def get_intersection(lst1, lst2):
     """
-    """
-    len1 = 0
-    node = lst1.head
-    while node:
-        len1 += 1
-        node = node.next
+    Find intersection node for two linked lists.
 
-    len2 = 0
-    node = lst2.head
-    while node:
+    Complexity: O(N + M) time, O(1) space.
+
+    Args:
+        lst1 (LinkedList): First linked list
+        lst2 (LinkedList): Second linked list
+
+    Returns:
+        ListNode: Common intersection node or None
+
+    """
+    if lst1.head is None or lst2.head is None:
+        return None
+
+    len1 = 1
+    tail1 = lst1.head
+    while tail1.next:
+        len1 += 1
+        tail1 = tail1.next
+
+    len2 = 1
+    tail2 = lst2.head
+    while tail2.next:
         len2 += 1
-        node = node.next
+        tail2 = tail2.next
+
+    if tail1 is not tail2:
+        return None
 
     runner1 = lst1.head
     runner2 = lst2.head
@@ -36,13 +53,11 @@ def get_intersection(lst1, lst2):
         for i in range(len1 - len2):
             runner1 = runner1.next
 
-    while runner1:
-        if runner1 is runner2:
-            return runner1
+    while runner1 is not runner2:
         runner1 = runner1.next
         runner2 = runner2.next
 
-    return None
+    return runner1
 
 
 class TestIntersection(unittest.TestCase):
@@ -83,38 +98,34 @@ class TestIntersection(unittest.TestCase):
         ([0, 1, 2, 3], [2, 3], []),
         ([0, 1, 2, 3], [1, 2, 3], []),
         ([0, 1, 2, 3], [0, 1, 2, 3], []),
-        ([], [], [0, 1, 2, 3, 4]),
+        ([0], [], [1, 2, 3, 4]),
         ([0, 1], [], [2, 3, 4]),
-        ([0, 1, 2], [], [3, 4]),
-        ([0, 1, 2], [0, 1, 2], [3, 4]),
-        ([0, 1, 2, 3], [2, 3], [4]),
-        ([0, 1, 2, 3, 4], [], []),
-        ([0, 1, 2, 3, 4], [2, 3, 4], []),
-        ([0], [], [1, 2, 3, 4, 5]),
-        ([0, 1], [1], [2, 3, 4, 5]),
-        ([0, 1, 2], [2], [3, 4, 5]),
-        ([0, 1, 2, 3], [], [4, 5]),
-        ([0, 1, 2, 3], [1, 2, 3], [4, 5]),
+        ([0, 1], [1], [2, 3, 4]),
+        ([0, 1, 2], [2], [3, 4]),
+        ([0, 1, 2, 3], [], [4]),
+        ([0, 1, 2, 3], [1, 2, 3], [4]),
+        ([0, 1, 2, 3, 4], [4], []),
+        ([0, 1, 2, 3, 4], [1, 2, 3, 4], []),
+        ([0], [0], [1, 2, 3, 4, 5]),
+        ([0, 1, 2], [1, 2], [3, 4, 5]),
+        ([0, 1, 2, 3], [0, 1, 2, 3], [4, 5]),
         ([0, 1, 2, 3, 4], [4], [5]),
-        ([0, 1, 2, 3, 4], [1, 2, 3, 4], [5]),
+        ([0, 1, 2, 3, 4], [2, 3, 4], [5]),
         ([0, 1, 2, 3, 4, 5], [], []),
         ([0, 1, 2, 3, 4, 5], [4, 5], []),
-        ([0, 1, 2, 3, 4, 5], [2, 3, 4, 5], []),
         ([0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5], []),
-        ([0], [0], [1, 2, 3, 4, 5, 6]),
+        ([], [], [0, 1, 2, 3, 4, 5, 6]),
         ([0, 1], [0, 1], [2, 3, 4, 5, 6]),
-        ([0, 1, 2], [1, 2], [3, 4, 5, 6]),
-        ([0, 1, 2, 3], [3], [4, 5, 6]),
-        ([0, 1, 2, 3], [0, 1, 2, 3], [4, 5, 6]),
-        ([0, 1, 2, 3, 4], [3, 4], [5, 6]),
-        ([0, 1, 2, 3, 4], [0, 1, 2, 3, 4], [5, 6]),
-        ([0, 1, 2, 3, 4, 5], [5], [6]),
-        ([0, 1, 2, 3, 4, 5], [3, 4, 5], [6]),
-        ([0, 1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [6]),
-        ([0, 1, 2, 3, 4, 5, 6], [], []),
-        ([0, 1, 2, 3, 4, 5, 6], [5, 6], []),
-        ([0, 1, 2, 3, 4, 5, 6], [3, 4, 5, 6], []),
-        ([0, 1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5, 6], []),
+        ([0, 1, 2], [0, 1, 2], [3, 4, 5, 6]),
+        ([0, 1, 2, 3], [1, 2, 3], [4, 5, 6]),
+        ([0, 1, 2, 3, 4], [], [5, 6]),
+        ([0, 1, 2, 3, 4], [4], [5, 6]),
+        ([0, 1, 2, 3, 4], [1, 2, 3, 4], [5, 6]),
+        ([0, 1, 2, 3, 4, 5], [4, 5], [6]),
+        ([0, 1, 2, 3, 4, 5], [2, 3, 4, 5], [6]),
+        ([0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5], [6]),
+        ([0, 1, 2, 3, 4, 5, 6], [4, 5, 6], []),
+        ([0, 1, 2, 3, 4, 5, 6], [2, 3, 4, 5, 6], [])
     ]
 
     def test_get_intersection(self):
@@ -135,15 +146,3 @@ class TestIntersection(unittest.TestCase):
 
             self.assertIs(get_intersection(lst1, lst2), tail.head)
             self.assertIs(get_intersection(lst2, lst1), tail.head)
-
-    def generate_test_data(self):
-        max_list_len = 0
-        for max_list_len in range(7):
-            # print(max_list_len)
-            for max_list_head_len in range(max_list_len + 1):
-                tail_len = max_list_len - max_list_head_len
-                head1 = [i for i in range(max_list_head_len)]
-                tail = [i for i in range(max_list_head_len, max_list_len)]
-                for min_list_head_len in range(max_list_head_len + 1):
-                    head2 = [i for i in range(max_list_head_len - min_list_head_len, max_list_head_len)]
-                    print('{},'.format((head1, head2, tail)))
