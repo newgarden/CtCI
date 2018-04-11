@@ -80,7 +80,3 @@ class TestPartition(unittest.TestCase):
             lst = LinkedList(input_lst)
             partition(lst, pivot)
             self.assertEqual(lst, LinkedList(output_lst))
-
-
-if __name__ == '__main__':
-    unittest.main()

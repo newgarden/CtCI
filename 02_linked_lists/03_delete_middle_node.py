@@ -56,7 +56,3 @@ class TestDeleteMiddleNode(unittest.TestCase):
 
         delete_middle_node(lst[0])
         self.assertEqual(lst, LinkedList(['g']))
-
-
-if __name__ == '__main__':
-    unittest.main()

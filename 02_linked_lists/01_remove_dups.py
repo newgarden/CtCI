@@ -82,7 +82,3 @@ class TestRemoveDups(unittest.TestCase):
             lst = LinkedList(data[0])
             remove_dups2(lst)
             self.assertEqual(lst, LinkedList(data[1]))
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -69,7 +69,3 @@ class TestKthToLast(unittest.TestCase):
         self.assertEqual(get_kth_to_last(lst, 1).value, 'b')
         self.assertEqual(get_kth_to_last(lst, 2).value, 'a')
         self.assertEqual(get_kth_to_last(lst, 3), None)
-
-
-if __name__ == '__main__':
-    unittest.main()

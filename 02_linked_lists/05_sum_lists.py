@@ -192,7 +192,3 @@ class TestSumList(unittest.TestCase):
             result_lst = LinkedList(reversed(result))
             self.assertEqual(sum_reversed_lists(lst1, lst2), result_lst)
             self.assertEqual(sum_reversed_lists(lst2, lst1), result_lst)
-
-
-if __name__ == '__main__':
-    unittest.main()
