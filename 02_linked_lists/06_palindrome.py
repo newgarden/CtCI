@@ -6,7 +6,7 @@ Problem statement: Implement a function to check if a linked list is a palindrom
 
 """
 import unittest
-from linked_list import LinkedList
+from .linked_list import LinkedList
 
 
 def is_palindrome1(lst):
