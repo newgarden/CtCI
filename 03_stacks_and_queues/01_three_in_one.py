@@ -92,21 +92,119 @@ class StackArray:
 
 class TestStackArray(unittest.TestCase):
 
-    def test_stack_array(self):
+    def test_stack_array_4x1(self):
+        # (_ _ _ _)
+        #   empty
+        stack_array = StackArray(4, 1)
+
+        self.assertEqual(len(stack_array), 1)
+        self.assertRaises(IndexError, lambda: stack_array[1])
+        self.assertIs(type(stack_array[0]), StackArrayItem)
+        self.assertRaises(EmptyStackError, stack_array[0].pop)
+        self.assertRaises(EmptyStackError, stack_array[0].peek)
+        self.assertIs(stack_array[0].is_empty(), True)
+
+        # (1 _ _ _)
+        #  ^
+        stack_array[0].push(1)
+        self.assertEqual(stack_array[0].peek(), 1)
+        self.assertIs(stack_array[0].is_empty(), False)
+
+        # (1 _ _ _)
+        #   empty
+        self.assertEqual(stack_array[0].pop(), 1)
+        self.assertRaises(EmptyStackError, stack_array[0].pop)
+        self.assertRaises(EmptyStackError, stack_array[0].peek)
+        self.assertIs(stack_array[0].is_empty(), True)
+
+        # (2 3 4 _)
+        #      ^
+        stack_array[0].push(2)
+        stack_array[0].push(3)
+        stack_array[0].push(4)
+        self.assertEqual(stack_array[0].peek(), 4)
+        self.assertIs(stack_array[0].is_empty(), False)
+
+        # (2 3 4 5)
+        #        ^
+        stack_array[0].push(5)
+        self.assertRaises(StackOverflowError, stack_array[0].push, 6)
+        self.assertEqual(stack_array[0].peek(), 5)
+        self.assertIs(stack_array[0].is_empty(), False)
+
+        # (2 3 4 5)
+        #      ^
+        self.assertEqual(stack_array[0].pop(), 5)
+        self.assertEqual(stack_array[0].peek(), 4)
+        self.assertIs(stack_array[0].is_empty(), False)
+
+        # (2 3 4 5)
+        #   empty
+        self.assertEqual(stack_array[0].pop(), 4)
+        self.assertEqual(stack_array[0].pop(), 3)
+        self.assertEqual(stack_array[0].pop(), 2)
+        self.assertRaises(EmptyStackError, stack_array[0].pop)
+        self.assertRaises(EmptyStackError, stack_array[0].peek)
+        self.assertIs(stack_array[0].is_empty(), True)
+
+    def test_stack_array_1x2(self):
+        # (_) (_)
+        #  e   e
+        stack_array = StackArray(1, 2)
+        self.assertEqual(len(stack_array), 2)
+        self.assertRaises(IndexError, lambda: stack_array[2])
+
+        for i in range(2):
+            self.assertIs(type(stack_array[i]), StackArrayItem)
+            self.assertRaises(EmptyStackError, stack_array[i].pop)
+            self.assertRaises(EmptyStackError, stack_array[i].peek)
+            self.assertIs(stack_array[i].is_empty(), True)
+
+        # (1) (_)
+        #  ^   e
+        stack_array[0].push(1)
+        self.assertRaises(StackOverflowError, stack_array[0].push, 2)
+        self.assertEqual(stack_array[0].peek(), 1)
+        self.assertIs(stack_array[0].is_empty(), False)
+        self.assertRaises(EmptyStackError, stack_array[1].pop)
+        self.assertRaises(EmptyStackError, stack_array[1].peek)
+        self.assertIs(stack_array[1].is_empty(), True)
+
+        # (1) (a)
+        #  e   ^
+        stack_array[1].push('a')
+        self.assertEqual(stack_array[0].pop(), 1)
+        self.assertRaises(EmptyStackError, stack_array[0].pop)
+        self.assertRaises(EmptyStackError, stack_array[0].peek)
+        self.assertIs(stack_array[0].is_empty(), True)
+        self.assertRaises(StackOverflowError, stack_array[1].push, 'b')
+        self.assertEqual(stack_array[1].peek(), 'a')
+        self.assertIs(stack_array[1].is_empty(), False)
+
+        # (2) (a)
+        #  ^   e
+        stack_array[0].push(2)
+        stack_array[1].pop()
+        self.assertRaises(StackOverflowError, stack_array[0].push, 3)
+        self.assertEqual(stack_array[0].peek(), 2)
+        self.assertIs(stack_array[0].is_empty(), False)
+        self.assertRaises(EmptyStackError, stack_array[1].pop)
+        self.assertRaises(EmptyStackError, stack_array[1].peek)
+        self.assertIs(stack_array[1].is_empty(), True)
+
+    def test_stack_array_3x3(self):
         # (_ _ _) (_ _ _) (_ _ _)
         #  empty   empty   empty
         stack_array = StackArray(3, 3)
 
         self.assertEqual(len(stack_array), 3)
+        self.assertRaises(IndexError, lambda: stack_array[len(stack_array)])
 
         for i in range(len(stack_array)):
             self.assertIs(type(stack_array[i]), StackArrayItem)
             self.assertIs(stack_array[i].is_empty(), True)
             self.assertRaises(EmptyStackError, stack_array[i].peek)
             self.assertRaises(EmptyStackError, stack_array[i].pop)
-
-        with self.assertRaises(IndexError):
-            non_existent = stack_array[len(stack_array)]
 
         # (1 _ _) (a _ _) (@ _ _)
         #  ^       ^       ^
