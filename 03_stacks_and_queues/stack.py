@@ -57,60 +57,193 @@ class Stack:
         return self._top is None
 
 
+class LimitedStack(Stack):
+
+    def __init__(self, capacity):
+        super(LimitedStack, self).__init__()
+        self._capacity = capacity
+        self._length = 0
+
+    def __len__(self):
+        return self._length
+
+    @property
+    def capacity(self):
+        return self._capacity
+
+    @capacity.setter
+    def capacity(self, value):
+        if self._length > value:
+            raise StackOverflowError
+        self._capacity = value
+
+    def push(self, value):
+        if self._length >= self._capacity:
+            raise StackOverflowError
+        super(LimitedStack, self).push(value)
+        self._length += 1
+
+    def pop(self):
+        value = super(LimitedStack, self).pop()
+        self._length -= 1
+        return value
+
+    def is_full(self):
+        return self._length == self._capacity
+
+
 class TestStack(unittest.TestCase):
 
+    def _check_stack_state(self, s, is_empty, top=None):
+        self.assertIs(s.is_empty(), is_empty)
+        if is_empty:
+            self.assertRaises(EmptyStackError, s.pop)
+            self.assertRaises(EmptyStackError, s.peek)
+        else:
+            self.assertEqual(s.peek(), top)
+
     def test_stack(self):
-        stack = Stack()  # []
+        # []
+        s = Stack()
+        self._check_stack_state(s, is_empty=True)
 
-        self.assertRaises(EmptyStackError, stack.pop)
-        self.assertRaises(EmptyStackError, stack.peek)
-        self.assertIs(stack.is_empty(), True)
+        # [1]
+        s.push(1)
+        self._check_stack_state(s, is_empty=False, top=1)
 
-        stack.push(1)  # [1]
+        # []
+        self.assertEqual(s.pop(), 1)
+        self._check_stack_state(s, is_empty=True)
 
-        self.assertEqual(stack.peek(), 1)
-        self.assertIs(stack.is_empty(), False)
+        # [2]
+        s.push(2)
+        self._check_stack_state(s, is_empty=False, top=2)
 
-        item = stack.pop()  # []
+        # [2 3]
+        s.push(3)
+        self._check_stack_state(s, is_empty=False, top=3)
 
-        self.assertEqual(item, 1)
-        self.assertRaises(EmptyStackError, stack.pop)
-        self.assertRaises(EmptyStackError, stack.peek)
-        self.assertIs(stack.is_empty(), True)
+        # [2]
+        self.assertEqual(s.pop(), 3)
+        self._check_stack_state(s, is_empty=False, top=2)
 
-        stack.push(2)  # [2]
-        stack.push(3)  # [2, 3]
+        # [2 4]
+        s.push(4)
+        self._check_stack_state(s, is_empty=False, top=4)
 
-        self.assertEqual(stack.peek(), 3)
-        self.assertIs(stack.is_empty(), False)
+        # [2 4 5]
+        s.push(5)
+        self._check_stack_state(s, is_empty=False, top=5)
 
-        item = stack.pop()  # [2]
+        # [2 4]
+        self.assertEqual(s.pop(), 5)
+        self._check_stack_state(s, is_empty=False, top=4)
 
-        self.assertEqual(item, 3)
-        self.assertEqual(stack.peek(), 2)
-        self.assertIs(stack.is_empty(), False)
+        # [2]
+        self.assertEqual(s.pop(), 4)
+        self._check_stack_state(s, is_empty=False, top=2)
 
-        stack.push(4)  # [2, 4]
-        stack.push(5)  # [2, 4, 5]
+        # []
+        self.assertEqual(s.pop(), 2)
+        self._check_stack_state(s, is_empty=True)
 
-        self.assertEqual(stack.peek(), 5)
-        self.assertIs(stack.is_empty(), False)
 
-        item = stack.pop()  # [2, 4]
+class TestLimitedStack(unittest.TestCase):
 
-        self.assertEqual(item, 5)
-        self.assertEqual(stack.peek(), 4)
-        self.assertIs(stack.is_empty(), False)
+    def _check_stack_state(self, s, is_empty, is_full, length, capacity, top=None):
+        self.assertIs(s.is_empty(), is_empty)
+        if is_empty:
+            self.assertRaises(EmptyStackError, s.pop)
+            self.assertRaises(EmptyStackError, s.peek)
+        else:
+            self.assertEqual(s.peek(), top)
 
-        item = stack.pop()  # [2]
+        self.assertIs(s.is_full(), is_full)
+        if is_full:
+            self.assertRaises(StackOverflowError, s.push, 100)
 
-        self.assertEqual(item, 4)
-        self.assertEqual(stack.peek(), 2)
-        self.assertIs(stack.is_empty(), False)
+        self.assertEqual(len(s), length)
+        self.assertEqual(s.capacity, capacity)
 
-        item = stack.pop()  # []
+    def test_limited_stack(self):
+        # (_ _ _ _)
+        s = LimitedStack(4)
+        self._check_stack_state(s, is_empty=True, is_full=False, length=0, capacity=4)
 
-        self.assertEqual(item, 2)
-        self.assertRaises(EmptyStackError, stack.pop)
-        self.assertRaises(EmptyStackError, stack.peek)
-        self.assertIs(stack.is_empty(), True)
+        # (1 _ _ _)
+        s.push(1)
+        self._check_stack_state(s, is_empty=False, is_full=False, length=1, capacity=4, top=1)
+
+        # (1 2 _ _)
+        s.push(2)
+        self._check_stack_state(s, is_empty=False, is_full=False, length=2, capacity=4, top=2)
+
+        # (1 2 3 _)
+        s.push(3)
+        self._check_stack_state(s, is_empty=False, is_full=False, length=3, capacity=4, top=3)
+
+        # (1 2 3 4)
+        s.push(4)
+        self._check_stack_state(s, is_empty=False, is_full=True, length=4, capacity=4, top=4)
+
+        # (1 2 3 4 _ _)
+        s.capacity = 6
+        self._check_stack_state(s, is_empty=False, is_full=False, length=4, capacity=6, top=4)
+
+        # (1 2 3 4 5 _)
+        s.push(5)
+        self._check_stack_state(s, is_empty=False, is_full=False, length=5, capacity=6, top=5)
+        self.assertRaises(StackOverflowError, setattr, s, 'capacity', 4)
+
+        s.push(6)  # (1 2 3 4 5 6)
+        self._check_stack_state(s, is_empty=False, is_full=True, length=6, capacity=6, top=6)
+
+        # (1 2 3 4 5 _)
+        self.assertEqual(s.pop(), 6)
+        self._check_stack_state(s, is_empty=False, is_full=False, length=5, capacity=6, top=5)
+
+        # (1 2 3 4 _ _)
+        self.assertEqual(s.pop(), 5)
+        self._check_stack_state(s, is_empty=False, is_full=False, length=4, capacity=6, top=4)
+
+        # (1 2 3 4)
+        s.capacity = 4
+        self._check_stack_state(s, is_empty=False, is_full=True, length=4, capacity=4, top=4)
+
+        # (1 2 3 _)
+        self.assertEqual(s.pop(), 4)
+        self._check_stack_state(s, is_empty=False, is_full=False, length=3, capacity=4, top=3)
+
+        # (1 2 _ _)
+        self.assertEqual(s.pop(), 3)
+        self._check_stack_state(s, is_empty=False, is_full=False, length=2, capacity=4, top=2)
+
+        # (1 2 7 _)
+        s.push(7)
+        self._check_stack_state(s, is_empty=False, is_full=False, length=3, capacity=4, top=7)
+
+        # (1 _ _ _)
+        self.assertEqual(s.pop(), 7)
+        self.assertEqual(s.pop(), 2)
+        self._check_stack_state(s, is_empty=False, is_full=False, length=1, capacity=4, top=1)
+
+        # (_ _ _ _)
+        self.assertEqual(s.pop(), 1)
+        self._check_stack_state(s, is_empty=True, is_full=False, length=0, capacity=4)
+
+        # (8 _ _ _)
+        s.push(8)
+        self._check_stack_state(s, is_empty=False, is_full=False, length=1, capacity=4, top=8)
+
+        # (8)
+        s.capacity = 1
+        self.assertRaises(StackOverflowError, setattr, s, 'capacity', 0)
+        self._check_stack_state(s, is_empty=False, is_full=True, length=1, capacity=1, top=8)
+
+        # (_)
+        self.assertEqual(s.pop(), 8)
+        self._check_stack_state(s, is_empty=True, is_full=False, length=0, capacity=1)
+
+        # ()
+        s.capacity = 0
+        self._check_stack_state(s, is_empty=True, is_full=True, length=0, capacity=0)
