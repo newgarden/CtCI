@@ -182,7 +182,7 @@ class TestSetOfStacks(unittest.TestCase):
         self._check_state(s, [()])
 
         s.push(0)
-        self._check_state(s, [(0, )])
+        self._check_state(s, [(0,)])
 
         s.push(1)
         self._check_state(s, [(0, 1)])
@@ -257,3 +257,142 @@ class TestSetOfStacks(unittest.TestCase):
 
         s.push(12)
         self._check_state(s, [(12,)])
+
+    def test_size_3(self):
+        s = SetOfStacks(3)
+        self.assertEqual(s.capacity, 3)
+        self._check_state(s, [()])
+
+        s.push(0)
+        self._check_state(s, [(0,)])
+
+        self.assertEqual(s.pop(), 0)
+        self._check_state(s, [()])
+
+        s.push(1)
+        self._check_state(s, [(1,)])
+
+        s.push(2)
+        self._check_state(s, [(1, 2)])
+
+        self.assertEqual(s.pop(), 2)
+        self._check_state(s, [(1,)])
+
+        self.assertEqual(s.pop_at(0), 1)
+        self._check_state(s, [()])
+
+        s.push(3)
+        self._check_state(s, [(3,)])
+
+        s.push(4)
+        self._check_state(s, [(3, 4)])
+
+        s.push(5)
+        self._check_state(s, [(3, 4, 5)])
+
+        s.push(6)
+        self._check_state(s, [(3, 4, 5), (6,)])
+
+        self.assertEqual(s.pop(), 6)
+        self._check_state(s, [(3, 4, 5)])
+
+        s.push(7)
+        self._check_state(s, [(3, 4, 5), (7,)])
+
+        s.push(8)
+        self._check_state(s, [(3, 4, 5), (7, 8)])
+
+        s.push(9)
+        self._check_state(s, [(3, 4, 5), (7, 8, 9)])
+
+        self.assertEqual(s.pop_at(0), 5)
+        self._check_state(s, [(3, 4, 7), (8, 9)])
+
+        self.assertEqual(s.pop(), 9)
+        self._check_state(s, [(3, 4, 7), (8,)])
+
+        s.push(10)
+        self._check_state(s, [(3, 4, 7), (8, 10)])
+
+        s.push(11)
+        self._check_state(s, [(3, 4, 7), (8, 10, 11)])
+
+        s.push(12)
+        self._check_state(s, [(3, 4, 7), (8, 10, 11), (12,)])
+
+        self.assertEqual(s.pop_at(2), 12)
+        self._check_state(s, [(3, 4, 7), (8, 10, 11)])
+
+        s.push(13)
+        self._check_state(s, [(3, 4, 7), (8, 10, 11), (13,)])
+
+        s.push(14)
+        self._check_state(s, [(3, 4, 7), (8, 10, 11), (13, 14)])
+
+        self.assertEqual(s.pop_at(1), 11)
+        self._check_state(s, [(3, 4, 7), (8, 10, 13), (14,)])
+
+        self.assertEqual(s.pop_at(1), 13)
+        self._check_state(s, [(3, 4, 7), (8, 10, 14)])
+
+        s.push(15)
+        self._check_state(s, [(3, 4, 7), (8, 10, 14), (15,)])
+
+        s.push(16)
+        self._check_state(s, [(3, 4, 7), (8, 10, 14), (15, 16)])
+
+        s.push(17)
+        self._check_state(s, [(3, 4, 7), (8, 10, 14), (15, 16, 17)])
+
+        s.push(18)
+        self._check_state(s, [(3, 4, 7), (8, 10, 14), (15, 16, 17), (18,)])
+
+        self.assertEqual(s.pop_at(0), 7)
+        self._check_state(s, [(3, 4, 8), (10, 14, 15), (16, 17, 18)])
+
+        s.push(19)
+        self._check_state(s, [(3, 4, 8), (10, 14, 15), (16, 17, 18), (19,)])
+
+        s.push(20)
+        self._check_state(s, [(3, 4, 8), (10, 14, 15), (16, 17, 18), (19, 20)])
+
+        s.push(21)
+        self._check_state(s, [(3, 4, 8), (10, 14, 15), (16, 17, 18), (19, 20, 21)])
+
+        self.assertRaises(IndexError, s.pop_at, 4)
+
+        self.assertEqual(s.pop_at(0), 8)
+        self._check_state(s, [(3, 4, 10), (14, 15, 16), (17, 18, 19), (20, 21)])
+
+        self.assertEqual(s.pop_at(1), 16)
+        self._check_state(s, [(3, 4, 10), (14, 15, 17), (18, 19, 20), (21,)])
+
+        self.assertEqual(s.pop_at(2), 20)
+        self._check_state(s, [(3, 4, 10), (14, 15, 17), (18, 19, 21)])
+
+        self.assertEqual(s.pop(), 21)
+        self._check_state(s, [(3, 4, 10), (14, 15, 17), (18, 19)])
+
+        self.assertEqual(s.pop(), 19)
+        self._check_state(s, [(3, 4, 10), (14, 15, 17), (18,)])
+
+        self.assertEqual(s.pop_at(2), 18)
+        self._check_state(s, [(3, 4, 10), (14, 15, 17)])
+
+        self.assertEqual(s.pop_at(0), 10)
+        self._check_state(s, [(3, 4, 14), (15, 17)])
+
+        self.assertEqual(s.pop_at(0), 14)
+        self._check_state(s, [(3, 4, 15), (17,)])
+
+        self.assertEqual(s.pop_at(0), 15)
+        self._check_state(s, [(3, 4, 17)])
+
+        self.assertEqual(s.pop(), 17)
+        self._check_state(s, [(3, 4)])
+
+        self.assertEqual(s.pop(), 4)
+        self._check_state(s, [(3,)])
+
+        self.assertEqual(s.pop(), 3)
+        self._check_state(s, [()])
