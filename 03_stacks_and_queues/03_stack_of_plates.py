@@ -20,6 +20,17 @@ from .stack import EmptyStackError
 
 
 class SubStack(deque):
+    """
+    Sub-stack of SetOfStacks.
+
+    It is implemented as a double-ended queue. Deque allows effective shifting of elements between
+    sub-stacks to satisfy the follow-up problem. A plate can be taken from the top of a sub-stack
+    and replaced by a plate taken from the bottom of the following sub-stack.
+
+    Args:
+         next_substack (SubStack): Pointer to next the sub-stack (the older one).
+
+    """
 
     def __init__(self, next_substack=None):
         super(SubStack, self).__init__()
@@ -27,6 +38,16 @@ class SubStack(deque):
 
 
 class SetOfStacks:
+    """
+    Implements stack of plates including follow up requirements.
+
+    SetOfStacks is implemented as a linked list of double ended queues. The head of the list is
+    the newest sub-stack in the set.
+
+    Args:
+        capacity (int): Capacity of the sub-stacks.
+
+    """
 
     def __init__(self, capacity):
         self._capacity = capacity
@@ -38,9 +59,19 @@ class SetOfStacks:
 
     @property
     def capacity(self):
+        """
+        Capacity of the sub-stacks.
+        """
         return self._capacity
 
     def pop(self):
+        """
+        Pop an element from the last (newest) sub-stack in O(1) time.
+
+        Raises:
+            EmptyStackError: If there is a single sub-stack which is empty.
+
+        """
         if self._length == 1 and not len(self._top):
             raise EmptyStackError
 
@@ -53,20 +84,66 @@ class SetOfStacks:
         return value
 
     def push(self, value):
+        """
+        Push a new item to the set of stacks in O(1) time creating a new sub-stack if necessary.
+        """
         if len(self._top) == self._capacity:
             self._top = SubStack(self._top)
             self._length += 1
         self._top.append(value)
 
     def peek(self):
+        """
+        Peek an element from the last (newest) sub-stack in O(1) time.
+
+        Raises:
+            EmptyStackError: If there is a single sub-stack which is empty.
+
+        """
         if self._length == 1 and not len(self._top):
             raise EmptyStackError
         return self._top[-1]
 
     def is_empty(self):
+        """
+        Return True is set is empty, False otherwise.
+
+        Set is considered empty if it consists of a single empty sub-stack.
+
+        """
         return self._length == 1 and not len(self._top)
 
     def pop_at(self, i):
+        """
+        Pop an item from a specific sub-stack.
+
+        When an item is popped from top of a sub-stack elements are shifted by popping the bottom
+        element of the next sub-stack and pushing it to the top of current sub-stack. This operation
+        is performed for all following sub-stacks.
+
+        Since each sub-stack is a deque, taking items from the bottom and pushing them to the top
+        is effective. For a set of N stacks the time complexity is O(N) no matter what sub-stack
+        capacity is.
+
+        Args:
+            i (int): Index of sub-stack, zero based.
+
+        Raises:
+            IndexError: If index is out of range.
+            EmptyStackError: If there is a single sub-stack which is empty.
+
+        Examples:
+            >>> s = SetOfStacks(3)
+            >>> s.push(1), s.push(2), s.push(3), s.push(4), s.push(5)
+            >>> s.push(6), s.push(7), s.push(8), s.push(9)
+            >>> s.as_tuples()
+            [(1, 2, 3), (4, 5, 6), (7, 8, 9)]
+            >>> s.pop_at(0)
+            3
+            >>> s.as_tuples()
+            [(1, 2, 4), (5, 6, 7), (8, 9)]
+
+        """
         if i < 0 or i > self._length - 1:
             raise IndexError
 
@@ -92,6 +169,12 @@ class SetOfStacks:
         return value
 
     def as_tuples(self):
+        """
+        Represent the sub-stacks as a list of tuples.
+
+        Useful for testing and inspecting the data structure.
+
+        """
         tuples = [None] * self._length
         current_substack = self._top
         for i in range(self._length - 1, -1, -1):
@@ -115,7 +198,7 @@ class TestSetOfStacks(unittest.TestCase):
             self.assertIs(stack.is_empty(), False)
             self.assertEqual(stack.peek(), expected_state[-1][-1])
 
-    def test_size_1(self):
+    def test_capacity_1(self):
         s = SetOfStacks(1)
         self.assertEqual(s.capacity, 1)
         self._check_state(s, [()])
@@ -176,7 +259,7 @@ class TestSetOfStacks(unittest.TestCase):
         self.assertEqual(s.pop_at(0), 8)
         self._check_state(s, [()])
 
-    def test_size_2(self):
+    def test_capacity_2(self):
         s = SetOfStacks(2)
         self.assertEqual(s.capacity, 2)
         self._check_state(s, [()])
@@ -258,7 +341,7 @@ class TestSetOfStacks(unittest.TestCase):
         s.push(12)
         self._check_state(s, [(12,)])
 
-    def test_size_3(self):
+    def test_capacity_3(self):
         s = SetOfStacks(3)
         self.assertEqual(s.capacity, 3)
         self._check_state(s, [()])
