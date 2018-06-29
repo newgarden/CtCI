@@ -9,9 +9,16 @@ class StackError(Exception):
     pass
 
 
+class QueueError(Exception):
+    """
+    Base queue exception
+    """
+    pass
+
+
 class EmptyStackError(StackError):
     """
-    Raised if peek() or pop() is attempted for an empty stack.
+    Raised if peek() or pop() is attempted on an empty stack.
     """
     pass
 
@@ -19,6 +26,13 @@ class EmptyStackError(StackError):
 class StackOverflowError(StackError):
     """
     Raised if a new element cannot be pushed to a stack because it has reached its full capacity.
+    """
+    pass
+
+
+class EmptyQueueError(QueueError):
+    """
+    Raised if peek() or pop() is attempted on an empty queue.
     """
     pass
 
