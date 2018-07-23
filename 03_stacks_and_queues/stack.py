@@ -9,7 +9,6 @@ class StackError(Exception):
     pass
 
 
-
 class EmptyStackError(StackError):
     """
     Raised if peek() or pop() is attempted on an empty stack.
