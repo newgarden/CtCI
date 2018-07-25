@@ -16,7 +16,7 @@ Implement a function popAt (int index) which performs a pop operation on a speci
 from collections import deque
 import unittest
 
-from .stack import EmptyStackError
+from .stacks import EmptyStackError
 
 
 class SubStack(deque):

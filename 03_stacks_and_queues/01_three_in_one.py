@@ -6,7 +6,7 @@ Describe how you could use a single array to implement three stacks.
 
 """
 import unittest
-from .stack import EmptyStackError, StackOverflowError
+from .stacks import EmptyStackError, StackOverflowError
 
 
 class StackArrayItem:

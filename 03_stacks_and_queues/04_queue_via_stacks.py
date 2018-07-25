@@ -7,7 +7,7 @@ Implement a MyQueue class which implements a queue using two stacks.
 """
 import unittest
 
-from .stack import Stack
+from .stacks import Stack
 from .queues import EmptyQueueError
 
 

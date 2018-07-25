@@ -7,7 +7,7 @@ which returns the minimum element? Push, pop and min should all operate in 0(1) 
 
 """
 import unittest
-from .stack import Stack, EmptyStackError
+from .stacks import Stack, EmptyStackError
 
 
 class MinStackItem:
