@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+"""
+Stack implementation.
+"""
 import unittest
 
 
@@ -25,6 +28,16 @@ class StackOverflowError(StackError):
 
 class StackItem:
     """
+    Item of a linked list that constitutes a stack, used internally by Stack class.
+
+    Args:
+        value: Value of stack item.
+        next_item (StackItem): Next item in the stack (under the current one).
+
+    Attributes:
+        value: Value of stack item.
+        next: (StackItem): Next item in the stack (under the current one).
+
     """
     __slots__ = ('value', 'next')
 
@@ -34,14 +47,27 @@ class StackItem:
 
 
 class Stack:
+    """
+    Stack implementation based on linked list.
+    """
 
     def __init__(self):
         self._top = None
 
     def push(self, value):
+        """
+        Push value to the stack.
+        """
         self._top = StackItem(value, self._top)
 
     def pop(self):
+        """
+        Remove top item from the stack and return its value.
+
+        Raises:
+            EmptyStackError: If stack is empty.
+
+        """
         if not self._top:
             raise EmptyStackError
         value = self._top.value
@@ -49,11 +75,21 @@ class Stack:
         return value
 
     def peek(self):
+        """
+        Get the value of top item without removing it.
+
+        Raises:
+            EmptyStackError: If stack is empty.
+
+        """
         if self._top is None:
             raise EmptyStackError
         return self._top.value
 
     def is_empty(self):
+        """
+        Return True if stack is empty, False otherwise.
+        """
         return self._top is None
 
 

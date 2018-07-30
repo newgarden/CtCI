@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+"""
+Queue implementation.
+"""
 import unittest
 
 
@@ -18,6 +21,15 @@ class EmptyQueueError(QueueError):
 
 class QueueItem:
     """
+    Item of a linked list that constitutes a queue, used internally by Queue class.
+
+    Args:
+        value: Value of queue item.
+        next_item (QueueItem): Next item in the queue.
+
+    Attributes:
+        value: Value of queue item.
+        next: (QueueItem): Next item in the queue.
     """
     __slots__ = ('value', 'next')
 
@@ -27,12 +39,18 @@ class QueueItem:
 
 
 class Queue:
+    """
+    Queue implementation based on linked list.
+    """
 
     def __init__(self):
         self._front = None
         self._rear = None
 
     def add(self, value):
+        """
+        Add item to the end of the queue.
+        """
         if not self._front:
             self._rear = self._front = QueueItem(value)
         else:
@@ -41,6 +59,13 @@ class Queue:
             self._rear = new_item
 
     def remove(self):
+        """
+        Remove the first item from the front of the queue and return its value.
+
+        Raises:
+            EmptyQueueError: If queue is empty.
+
+        """
         if not self._front:
             raise EmptyQueueError
         value = self._front.value
@@ -50,11 +75,21 @@ class Queue:
         return value
 
     def peek(self):
+        """
+        Get the value of the front item without removing it.
+
+        Raises:
+            EmptyQueueError: If queue is empty.
+
+        """
         if not self._front:
             raise EmptyQueueError
         return self._front.value
 
     def is_empty(self):
+        """
+        Return True if queue is empty, False otherwise.
+        """
         return self._front is None
 
 
