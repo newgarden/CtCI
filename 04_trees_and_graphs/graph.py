@@ -3,6 +3,7 @@ import unittest
 
 
 class GraphNode:
+    __slots__ = ('name', 'links')
 
     def __init__(self, name, links=None):
         self.name = name
