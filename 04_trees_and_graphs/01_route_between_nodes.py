@@ -37,6 +37,14 @@ def find_path(node1, node2):
 
 
 class TestFindPath(unittest.TestCase):
+    """
+    Test find_path() function.
+
+    Each test in the TestCase named test_case_<number_of_nodes>_<test_sequence_number>.
+
+    Depiction of test cases: ./images/problem-1-route-between-nodes.svg
+
+    """
 
     def _run_test_case(self, graph, paths):
         for node1 in graph.nodes:
