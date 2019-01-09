@@ -11,7 +11,7 @@ bottom right.
 import unittest
 
 
-def find_path(r, c, off_limits):
+def find_path(rows, cols, off_limits):
     """
 
     Args:
@@ -22,7 +22,46 @@ def find_path(r, c, off_limits):
     Returns:
 
     """
-    pass
+    if not (rows > 0 and cols > 0):
+        return []    
+    
+    last_row = rows - 1
+    last_col = cols - 1
+    
+    DOWN = 1
+    RIGHT = 2
+    FINISH = 3
+    
+    path_matrix = [[None] * cols] * rows
+    off_limits = set(off_limits)
+    
+    if (last_row, last_col) in off_limits:
+        return []    
+    path_matrix[last_row, last_col] = FINISH
+    
+    for r in range(last_row, -1, -1):
+        for c in range(last_col, -1, -1):
+            if (r, c) in off_limits:
+                continue            
+            if r < last_row and path_matrix[r + 1, c]:
+                path_matrix[r, c] = DOWN
+                continue
+            if c < last_col and path_matrix[r, c + 1]:
+                path_matrix[r, c] = RIGHT
+    
+    if not path_matrix[0, 0]:
+        return []
+    
+    path = []    
+    r, c = 0, 0
+    while len(path) < rows + cols - 1:
+        path.append((r, c))
+        if path_matrix[r, c] == DOWN:
+            r += 1
+        else:
+            c += 1
+    
+    return path
 
 
 class TestFindPath(unittest.TestCase):
