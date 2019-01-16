@@ -7,6 +7,8 @@ only move in two directions, right and down, but certain cells are "off limits" 
 cannot step on them. Design an algorithm to find a path for the robot from the top left to the
 bottom right.
 
+Problem depiction and test cases: ./images/problem-2-robot-in-a-grid.svg
+
 """
 import unittest
 
