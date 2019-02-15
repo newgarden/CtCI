@@ -5,6 +5,7 @@ Power set
 Write a method to return all subsets of a set.
 
 """
+from itertools import chain, combinations
 import unittest
 
 
@@ -79,6 +80,29 @@ def power_set_2(s):
     return result
 
 
+def power_set_pythonic(iterable):
+    """
+    Pythonic way of solving the problem.
+
+    Complexity: O(n*2^n) time and space.
+
+    Although complexity is the same this function works faster because of usage of efficient
+    Python functional tools. This approach is more likely to be used in production but not
+    illustrative for learning recursion and dynamic programming.
+
+    Args:
+        iterable: Original set. Can be any iterable type.
+
+    Returns:
+        set: Set of frozen sets representing all subsets of the given iterable.
+
+    """
+    return set(
+        frozenset(subset) for subset in
+        chain.from_iterable(combinations(iterable, r) for r in range(len(iterable) + 1))
+    )
+
+
 class TestPowerSet(unittest.TestCase):
     data = [
         (set(), [[]]),
@@ -106,4 +130,9 @@ class TestPowerSet(unittest.TestCase):
     def test_power_set_2(self):
         for test_input, expected_output in self.data:
             self.assertEqual(power_set_2(test_input),
+                             set([frozenset(s) for s in expected_output]))
+
+    def test_power_set_pythonic(self):
+        for test_input, expected_output in self.data:
+            self.assertEqual(power_set_pythonic(test_input),
                              set([frozenset(s) for s in expected_output]))
