@@ -9,7 +9,7 @@ the second linked list, then they are intersecting.
 
 """
 import unittest
-from linked_list import LinkedList
+from .linked_list import LinkedList
 
 
 def get_intersection(lst1, lst2):

@@ -8,7 +8,7 @@ FOLLOW UP: How would you solve this problem if a temporary buffer is not allowed
 """
 import unittest
 
-from linked_list import LinkedList
+from .linked_list import LinkedList
 
 
 def remove_dups1(lst):

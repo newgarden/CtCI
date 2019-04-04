@@ -18,7 +18,7 @@ Example:
 
 """
 import unittest
-from linked_list import ListNode, LinkedList
+from .linked_list import ListNode, LinkedList
 
 
 def reverse_list(lst):

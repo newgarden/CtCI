@@ -7,7 +7,7 @@ Problem statement: Implement an algorithm to find the k-th to last element of a 
 """
 import unittest
 
-from linked_list import LinkedList
+from .linked_list import LinkedList
 
 
 def get_kth_to_last(lst, k):

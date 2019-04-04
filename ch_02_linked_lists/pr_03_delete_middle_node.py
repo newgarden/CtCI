@@ -12,7 +12,7 @@ Example:
 
 """
 import unittest
-from linked_list import LinkedList
+from .linked_list import LinkedList
 
 
 def delete_middle_node(node):
