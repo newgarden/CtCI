@@ -89,7 +89,3 @@ class Test(unittest.TestCase):
             m = case[0]
             rotate_matrix(m)
             self.assertEqual(m, case[1])
-
-
-if __name__ == '__main__':
-    unittest.main()

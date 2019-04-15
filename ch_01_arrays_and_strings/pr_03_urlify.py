@@ -56,7 +56,3 @@ class Test(unittest.TestCase):
     def test_urlify(self):
         for d in self.data:
             self.assertEqual(urlify(d[0], d[1]), d[2])
-
-
-if __name__ == '__main__':
-    unittest.main()

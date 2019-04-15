@@ -42,7 +42,3 @@ class Test(unittest.TestCase):
     def test_string_rotation(self):
         for data in self.data:
             self.assertEqual(string_rotation(data[0], data[1]), data[2])
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -40,7 +40,3 @@ class Test(unittest.TestCase):
             self.assertTrue(check_permutation(*data))
         for data in self.data_false:
             self.assertFalse(check_permutation(*data))
-
-
-if __name__ == '__main__':
-    unittest.main()

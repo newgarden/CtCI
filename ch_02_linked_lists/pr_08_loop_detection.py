@@ -42,7 +42,8 @@ def detect_loop(lst):
 
         fast_runner = fast_runner.next
 
-'''
+
+@unittest.skip('Problem is not solved yet.')
 class TestLoopDetection(unittest.TestCase):
 
     def test_loop_detection(self):
@@ -52,7 +53,3 @@ class TestLoopDetection(unittest.TestCase):
             print(i, detect_loop(lst).value)
 
             # print(i, detect_loop(lst).value)
-'''
-
-
-

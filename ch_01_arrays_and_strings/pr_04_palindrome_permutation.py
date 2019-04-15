@@ -43,7 +43,3 @@ class Test(unittest.TestCase):
     def test_palindrome_permutation(self):
         for data in self.data:
             self.assertEqual(palindrome_permutation(data[0]), data[1])
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -209,7 +209,3 @@ class Test(unittest.TestCase):
             input_copy = deepcopy(test_input)
             zero_matrix(input_copy)
             self.assertEqual(input_copy, expected_result)
-
-
-if __name__ == '__main__':
-    unittest.main()

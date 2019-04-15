@@ -27,7 +27,3 @@ class Test(unittest.TestCase):
             self.assertTrue(is_unique(st))
         for st in self.non_unique:
             self.assertFalse(is_unique(st))
-
-
-if __name__ == '__main__':
-    unittest.main()

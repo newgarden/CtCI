@@ -9,3 +9,11 @@ additional temporary stack, but you may not copy the elements into any other dat
 Hints:# 15, #32, #43
 
 """
+import unittest
+
+
+@unittest.skip('Problem is not solved yet.')
+class TestSortStack(unittest.TestCase):
+
+    def test_sort_stack(self):
+        pass

@@ -49,7 +49,3 @@ class Test(unittest.TestCase):
     def test_string_compression(self):
         for data in self.data:
             self.assertEqual(string_compression(data[0]), data[1])
-
-
-if __name__ == '__main__':
-    unittest.main()
