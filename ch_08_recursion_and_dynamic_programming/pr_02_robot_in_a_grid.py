@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Robot in a Grid
 

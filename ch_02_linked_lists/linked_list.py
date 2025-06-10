@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Simple implementation of linked list data structure for use in exercises from chapter 2.
 """
