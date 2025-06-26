@@ -8,7 +8,7 @@ import unittest
 
 def bubble_sort(lst):
     """
-    Sort a list using bubble sort.
+    Sort a list using bubble sort algorithm.
 
     Complexity: Time O(N²) worst case, O(N) best case; O(1) additional space.
 
@@ -24,6 +24,22 @@ def bubble_sort(lst):
                 swap = True
         if not swap:
             break
+
+
+def selection_sort(lst):
+    """
+    Sort a list using selection sort algorithm.
+
+    Complexity: O(N²) time, O(1) additional space.
+
+    Attributes:
+        lst (list): List to sort.
+
+    """
+    for i in range(len(lst) - 1):
+        for j in range(i + 1, len(lst)):
+            if lst[j] < lst[i]:
+                lst[i], lst[j] = lst[j], lst[i]
 
 
 class TestSorting(unittest.TestCase):
@@ -67,4 +83,12 @@ class TestSorting(unittest.TestCase):
                 lst_copy = lst.copy()
                 sorted_list = sorted(lst)
                 bubble_sort(lst_copy)
+                assert lst_copy == sorted_list
+
+    def test_selection_sort(self):
+        for lst in self.generate_lists():
+            with self.subTest(values=lst):
+                lst_copy = lst.copy()
+                sorted_list = sorted(lst)
+                selection_sort(lst_copy)
                 assert lst_copy == sorted_list
