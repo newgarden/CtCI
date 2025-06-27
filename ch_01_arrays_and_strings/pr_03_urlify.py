@@ -1,19 +1,23 @@
-"""
-Problem statement: Write a method to replace all spaces in a string with '%20'. You may assume that
-the string has sufficient space at the end to hold the additional characters, and that you are
-given the "true" length of the string. (Note: If implementing in Java, please use a character array
-so that you can perform this operation in place.)
+"""URLify.
 
+Write a method to replace all spaces in a string with '%20'. You may assume that
+the string has sufficient space at the end to hold the additional characters, and that you are
+given the "true" length of the string.
 """
 import unittest
 
 
-def urlify(st, true_len):
-    """
-    Solve the problem by modifying string in place in O(N) time.
+def urlify(st: list, true_len: int) -> list:
+    """Replace spaces in URL with '%20'.
 
-    A list is used instead of a string, because Python strings are immutable.
+    Modification is done in place. A list is used instead of a string, because Python strings are immutable.
 
+    Complexity: O(N) time, O(1) additional space.
+
+    :param st: URL as a list of characters.
+    :true_len: "True" length of the "string".
+
+    :return: Modified list, same object as st.
     """
     space_count = 0
     for i in range(0, true_len):

@@ -1,14 +1,20 @@
-"""
-Problem statement: Given two strings, write a method to decide if one is a permutation of the
-other.
+"""Check Permutation.
+
+Given two strings, write a method to decide if one is a permutation of the other.
 """
 from collections import Counter
 import unittest
 
 
-def check_permutation(s1, s2):
-    """
-    Solve the problem in O(N) time, O(N) space.
+def check_permutation(s1: str, s2: str) -> bool:
+    """Check if s1 is a permutation of s2.
+
+    Complexity: O(N) time, O(N) additional space.
+
+    :param s1: First string.
+    :param s2: Second string.
+
+    :return: True if one string is a permutation of another.
     """
     if len(s1) != len(s2):
         return False

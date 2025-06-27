@@ -1,13 +1,19 @@
-"""
-Problem statement: Implement an algorithm to determine if a string has all unique characters. What
-if you cannot use additional data structures?
+"""Is Unique.
+
+Implement an algorithm to determine if a string has all unique characters.
+What if you cannot use additional data structures?
 """
 import unittest
 
 
-def is_unique(st):
-    """
-    Solve the problem in O(N) time using additional memory.
+def is_unique(st: str) -> bool:
+    """Check whether a string has all unique characters.
+
+    Complexity: O(N) time, O(N) additional space.
+
+    :param st: String to check.
+
+    :return: True if all characters in the string are unique. False otherwise.
     """
     char_set = set()
     for ch in st:
