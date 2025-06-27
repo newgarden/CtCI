@@ -42,6 +42,61 @@ def selection_sort(lst):
                 lst[i], lst[j] = lst[j], lst[i]
 
 
+def merge_sort(lst: list) -> None:
+    """Sort a list using merge sort algorithm.
+
+    Complexity: O(N log N) time, O(N) additional space.
+
+    :param lst: List to sort.
+    """
+    buffer = lst.copy()
+    _merge_sort(lst, 0, len(lst) - 1, buffer)
+
+
+def _merge_sort(lst: list, start: int, end: int, buffer: list) -> None:
+    """Sort section of a list using merge sort.
+
+    :param lst: List to sort.
+    :param start: First index of the section.
+    :param end: Last index of the section.
+    :param buffer: Auxiliary buffer used during merge stage.
+    """
+    if end > start:
+        middle = (start + end) // 2
+        _merge_sort(lst, start, middle, buffer)
+        _merge_sort(lst, middle + 1, end, buffer)
+        _merge(lst, start, middle, end, buffer)
+
+
+def _merge(lst: list, start: int, middle: int, end: int, buffer: list) -> None:
+    """Merge two sorted adjacent sections of a list into one sorted section.
+
+    :param lst: List to sort.
+    :param start: First index of the left section.
+    :param middle: Last index of the left section.
+    :param end: Last index of the right section.
+    :param buffer: Auxiliary buffer used during merge stage.
+    """
+    buffer[start:end + 1] = lst[start:end + 1]
+
+    i = start
+    i_left = start
+    i_right = middle + 1
+    while (i_left <= middle) and (i_right <= end):
+        if buffer[i_left] <= buffer[i_right]:
+            lst[i] = buffer[i_left]
+            i_left += 1
+        else:
+            lst[i] = buffer[i_right]
+            i_right += 1
+        i += 1
+
+    # If there are still some items in the left section, add them to the end.
+    # If there are some items in the right section, don't touch them. They are already in place.
+    if i_left <= middle:
+        lst[i:end + 1] = buffer[i_left:middle + 1]
+
+
 class TestSorting(unittest.TestCase):
 
     def generate_lists(self):
@@ -91,4 +146,12 @@ class TestSorting(unittest.TestCase):
                 lst_copy = lst.copy()
                 sorted_list = sorted(lst)
                 selection_sort(lst_copy)
+                assert lst_copy == sorted_list
+
+    def test_merge_sort(self):
+        for lst in self.generate_lists():
+            with self.subTest(values=lst):
+                lst_copy = lst.copy()
+                sorted_list = sorted(lst)
+                merge_sort(lst_copy)
                 assert lst_copy == sorted_list
