@@ -1,6 +1,4 @@
-"""
-Implementations of some well-known sorting algorithms.
-"""
+"""Implementations of some well-known sorting algorithms."""
 from itertools import combinations_with_replacement, permutations
 from random import randint
 import unittest
