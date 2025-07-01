@@ -97,6 +97,58 @@ def _merge(lst: list, start: int, middle: int, end: int, buffer: list) -> None:
         lst[i:end + 1] = buffer[i_left:middle + 1]
 
 
+def quicksort(lst: list) -> None:
+    """Sort a list using quicksort algorithm.
+
+    Complexity: Time O(N log N) average case, O(N²) worst case. Additional space O(N log N) best case, O(N) worst case.
+
+    :param lst: List to sort.
+    """
+    if len(lst) > 1:
+        _quicksort(lst, 0, len(lst) - 1)
+
+
+def _quicksort(lst: list, start: int, end: int) -> None:
+    """Sort section of a list using quicksort.
+
+    :param lst: List to sort.
+    :param start: First index of the section.
+    :param end: Last index of the section.
+    """
+    partition_index = _partition(lst, start, end)
+    if start < partition_index - 1:
+        _quicksort(lst, start, partition_index - 1)
+    if end > partition_index:
+        _quicksort(lst, partition_index, end)
+
+
+def _partition(lst: list, start: int, end: int) -> int:
+    """Partitioning part of quicksort.
+
+    Split a list section into two partitions and swap items, so that all items of the left partition are smaller than
+    all items of the right.
+
+    :param lst: List to sort.
+    :param start: First index of the section.
+    :param end: Last index of the section.
+
+    :return: First index of the right partition.
+    """
+    pivot = lst[(start + end) // 2]
+    left = start
+    right = end
+    while left <= right:
+        while lst[left] < pivot:
+            left += 1
+        while lst[right] > pivot:
+            right -= 1
+        if left <= right:
+            lst[left], lst[right] = lst[right], lst[left]
+            left += 1
+            right -= 1
+    return left
+
+
 class TestSorting(unittest.TestCase):
 
     def generate_lists(self):
@@ -154,4 +206,12 @@ class TestSorting(unittest.TestCase):
                 lst_copy = lst.copy()
                 sorted_list = sorted(lst)
                 merge_sort(lst_copy)
+                assert lst_copy == sorted_list
+
+    def test_quicksort(self):
+        for lst in self.generate_lists():
+            with self.subTest(values=lst):
+                lst_copy = lst.copy()
+                sorted_list = sorted(lst)
+                quicksort(lst_copy)
                 assert lst_copy == sorted_list
