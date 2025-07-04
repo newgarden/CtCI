@@ -40,7 +40,7 @@ def binary_search(lst: list, value: Any) -> int | None:
 class TestSearching(unittest.TestCase):
 
     def generate_lists(self):
-        for size in range(50):
+        for size in range(1, 50):
             # For each size generate two lists. One with many repetitions, another with fewer repetitions.
             lst_1 = []
             lst_2 = []
@@ -53,6 +53,9 @@ class TestSearching(unittest.TestCase):
             yield lst_2
 
     def test_binary_search(self):
+        with self.subTest(([], 1)):
+            self.assertIsNone(binary_search([], 1))
+
         for lst in self.generate_lists():
             for value in lst:
                 with self.subTest((lst, value)):
