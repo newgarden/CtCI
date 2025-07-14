@@ -14,26 +14,16 @@ def binary_search(lst: list, value: Any) -> int | None:
 
     :return: Index of the value in the list. None if the value is not found in the list.
     """
-    if not lst:
-        return None
-
     start = 0
-    if lst[start] == value:
-        return start
-
     end = len(lst) - 1
-    if lst[end] == value:
-        return end
-
-    while (end - start) > 1:
+    while end >= start:
         middle = (start + end) // 2
-        if lst[middle] == value:
-            return middle
-        if value < lst[middle]:
-            end = middle
+        if lst[middle] > value:
+            end = middle - 1
+        elif lst[middle] < value:
+            start = middle + 1
         else:
-            start = middle
-
+            return middle
     return None
 
 
